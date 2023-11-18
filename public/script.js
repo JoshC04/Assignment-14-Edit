@@ -100,12 +100,12 @@ const populateEditForm = (movie) => {
 };
 
 const populateActors = (actors) => {
-  const actors = document.getElementById("actors");
-  actors.forEach((actor) => {
+  const actorsSection = document.getElementById("actors");
+  movie.actors.forEach((actor) => {
     const input = document.createElement("input");
     input.type = "text";
     input.value = actor;
-    actors.append(input);
+    actorsSection.append(input);
   });
 };
 
