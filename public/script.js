@@ -88,23 +88,49 @@ const displayMovieDetails = (movie) => {
   populateEditForm(movie);
 };
 
-const populateEditForm = (movie) => {};
+const populateEditForm = (movie) => {
+  const form = document.getElementById("add-or-edit");
+  form._id.value = movie._id;
+  form.title.value = movie.title;
+  form.image.value = movie.image;
+  form.length.value = movie.length;
+  form.year.value = movie.year;
+  form.director.value = movie.director;
+  populateActors(movie.actors);
+};
+
+const populateActors = (actors) => {
+  const actors = document.getElementById("actors");
+  actors.forEach((actor) => {
+    const input = document.createElement("input");
+    input.type = "text";
+    input.value = actor;
+    actors.append(input);
+  });
+};
 
 const addOrEditMovie = async (e) => {
   e.preventDefault();
   const form = document.getElementById("add-or-edit");
   const formData = new FormData(form);
+  formData.delete("image");
+  formData.append("actors", getActors());
+
   let response;
 
   if (form._id.value == -1) {
     formData.delete("_id");
-    formData.delete("image");
-    formData.append("actors", getActors());
 
     console.log(...formData);
 
     response = await fetch("/api/movies", {
       method: "POST",
+      body: formData
+    });
+  } else {
+    console.log(...formData);
+    response = await fetch(`/api/movies/${form._id.value}`, {
+      method: "PUT",
       body: formData
     });
   }
@@ -114,6 +140,11 @@ const addOrEditMovie = async (e) => {
   }
 
   response = await response.json();
+
+  if(form._id.value != -1) {
+    displayMovieDetails(response);
+  }
+
   resetForm();
   document.querySelector(".dialog").classList.add("hidden");
   showMovies();
