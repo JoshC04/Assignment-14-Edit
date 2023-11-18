@@ -101,7 +101,7 @@ const populateEditForm = (movie) => {
 
 const populateActors = (actors) => {
   const actorsSection = document.getElementById("actors");
-  movie.actors.forEach((actor) => {
+  actors.forEach((actor) => {
     const input = document.createElement("input");
     input.type = "text";
     input.value = actor;
