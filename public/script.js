@@ -76,7 +76,7 @@ const displayMovieDetails = (movie) => {
 
   clear.onclick = (e) => {
     e.preventDefault();
-    moviesDisplay.innerHTML = "";
+    deleteMovie(movie);
   };
 
   edit.onclick = (e) => {
@@ -88,11 +88,31 @@ const displayMovieDetails = (movie) => {
   populateEditForm(movie);
 };
 
+const deleteMovie = async (movie) => {
+  console.log(`Deleting movie ${movie._id}`);
+    let response = await fetch(`/api/movies/${movie._id}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json;charset=utf-8",
+    }
+  });
+
+  if (response.status != 200) {
+    console.log("Error deleting movie");
+    return;
+  }
+
+  let result = await response.json();
+  showMovies();
+  document.getElementById("movies-display").innerHTML = "";
+  resetForm();
+};
+
 const populateEditForm = (movie) => {
   const form = document.getElementById("add-or-edit");
   form._id.value = movie._id;
   form.title.value = movie.title;
-  form.image = movie.image;
+  form.image = movie.image.value;
   form.length.value = movie.length;
   form.year.value = movie.year;
   form.director.value = movie.director;

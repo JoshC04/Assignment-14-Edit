@@ -123,9 +123,9 @@ app.post("/api/movies", upload.single("image"), (req, res) => {
   res.send(movie);
 });
 
-app.put("/api/movies/:id", upload.single("img"), (req, res) => {
+app.put("/api/movies/:id", upload.single("image"), (req, res) => {
   const id = parseInt(req.params.id);
-  const movie = movies.find((m) => m.id === id);
+  const movie = movies.find((m) => m._id === id);
 
   const validate = validateMovie(req.body);
   if(validate.error) {
@@ -140,6 +140,19 @@ app.put("/api/movies/:id", upload.single("img"), (req, res) => {
   movie.length = req.body.length;
   movie.director = req.body.director;
 
+  res.send(movie);
+});
+
+app.delete("/api/movies/:id", (req, res) => {
+  const id = parseInt(req.params.id);
+  const movie = movies.find((m) => m._id === id);
+
+  if(!movie) {
+    res.status(404).send("Movie not found");
+  }
+
+  const index = movies.indexOf(movie);
+  movies.splice(index, 1);
   res.send(movie);
 });
 
