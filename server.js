@@ -135,7 +135,7 @@ app.put("/api/movies/:id", upload.single("img"), (req, res) => {
 
   movie.title = req.body.title;
   movie.year = req.body.year;
-  movie.image = req.body.img;
+  movie.image = req.body.image;
   movie.actors = req.body.actors.split(",");
   movie.length = req.body.length;
   movie.director = req.body.director;
